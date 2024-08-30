@@ -10,7 +10,7 @@ fn main() {
         println!("Connection established!");
         let mut buf = [0;1024];
 
-        stream.read(&mut buf).unwrap();
-        stream.write(&mut buf).unwrap();
+        stream.read_exact(&mut buf).unwrap();
+        stream.write_all(&buf).unwrap();
     }
 }

@@ -32,6 +32,7 @@ fn read_with_buffer() -> std::io::Result<()> {
     println!("{line}");
     Ok(())
 }
+
 fn main() {
     let file = file!();
     println!("{file}");
