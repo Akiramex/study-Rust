@@ -58,7 +58,7 @@ mod tests {
 
     #[test]
     fn test_add() {
-        let tokens = tokenize("(+ 1 2)").unwrap_or(vec![]);
+        let tokens = tokenize("(+ 1 2)").unwrap_or_default();
     
         assert_eq!(
             tokens,
@@ -81,7 +81,7 @@ mod tests {
                 (* pi (* r r))
             )
         ";
-        let tokens = tokenize(program).unwrap_or(vec![]);
+        let tokens = tokenize(program).unwrap_or_default();
         assert_eq!(
             tokens,
             vec![

@@ -16,11 +16,12 @@ impl Env {
 
     pub fn extend(parent: Rc<RefCell<Self>>) -> Env {
         Env {
-            vars: HashMap::new(),
             parent: Some(parent),
+            vars: HashMap::new(),
         }
     }
-
+    
+    // 递归取值，直到找到或者递归到最后一个None
     pub fn get(&self, name: &str) -> Option<Object> {
         match self.vars.get(name) {
             Some(value) =>Some(value.clone()),
@@ -33,5 +34,16 @@ impl Env {
 
     pub fn set(&mut self, name: &str, val: Object) {
         self.vars.insert(name.to_string(), val);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new() {
+        let env = Env::new();
+        println!{"{:?}", env}
     }
 }

@@ -2,12 +2,16 @@ mod object;
 mod env;
 mod lexer;
 mod parser;
+mod eval;
 
-use std::{rc::Rc, cell::RefCell, io::Write};
+use std::{rc::Rc, cell::RefCell};
+use object::Object;
 use linefeed::{Interface, ReadResult};
 
-fn main() {
-    let reader = Interface::new("application").unwrap();
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+
+    let reader = Interface::new("lisp_study").unwrap();
     let mut env = Rc::new(RefCell::new(env::Env::new()));
 
     reader.set_prompt("> ").unwrap();
@@ -16,42 +20,26 @@ fn main() {
         if input.eq("exit") {
             break;
         }
+        let val = eval::eval(input.as_ref(), &mut env)?;
+        match val {
+            Object::Void => {}
+            Object::Integer(n) => println!("{}", n),
+            Object::Bool(b) => println!("{}", b),
+            Object::Symbol(s) => println!("{}", s),
+            Object::Lambda(params, body) => {
+                println!("Lambda(");
+                for param in params {
+                    println!("{} ", param);
+                }
+                println!(")");
+                for expr in body {
+                    println!(" {}", expr);
+                }
+            }
+            _ => println!("{}", val),
+        }
         println!("get input {:?}", input); 
     }
     println!("Good Bye!");
-}
-
-fn my_interface() {
-    use std::io;
-
-    let mut buf = String::new();
-    loop {
-        print!("> ");
-        io::stdout().flush().unwrap();
-
-        io::stdin().read_line(&mut buf).unwrap();
-        let input = buf.trim();
-        if input.eq("exit") {
-            break;
-        }
-        println!("get input {:?}", input);
-        buf.clear();
-    }
-    println!("Good Bye!");
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test() {
-        #[derive(Debug, Default)]
-        struct Test {
-            a: Option<Box<Test>>
-        }
-
-        let a = Test::default();
-        println!("{:?}", a)
-    }
+    Ok(())
 }
