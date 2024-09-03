@@ -8,13 +8,14 @@ use std::{rc::Rc, cell::RefCell};
 use object::Object;
 use linefeed::{Interface, ReadResult};
 
+const PROMPT: &str = "> ";
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let reader = Interface::new("lisp_study").unwrap();
     let mut env = Rc::new(RefCell::new(env::Env::new()));
 
-    reader.set_prompt("> ").unwrap();
+    reader.set_prompt(format!("{}", PROMPT).as_ref()).unwrap();
 
     while let ReadResult::Input(input) = reader.read_line().unwrap() {
         if input.eq("exit") {
@@ -38,8 +39,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             _ => println!("{}", val),
         }
-        println!("get input {:?}", input); 
     }
+    
     println!("Good Bye!");
     Ok(())
 }

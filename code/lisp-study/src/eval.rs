@@ -4,7 +4,18 @@ use crate::parser::*;
 use std::cell::RefCell;
 use std::rc::Rc;
 
+fn print_list(list: &Vec<Object>, env: &mut Rc<RefCell<Env>>) -> Result<Object, String> {
+    let mut new_list = Vec::new();
 
+    for obj in list[1..].iter() {
+        new_list.push(eval_obj(obj, env)?);
+    }
+    for obj in new_list.iter() {
+        print!("{} ", obj);
+    }
+    println!("");
+    Ok(Object::Void)
+}
 
 fn eval_binary_op(list: &Vec<Object>, env: &mut Rc<RefCell<Env>>) -> Result<Object, String> {
     if list.len() != 3 {
@@ -143,6 +154,7 @@ fn eval_list(list: &Vec<Object>, env: &mut Rc<RefCell<Env>>) -> Result<Object, S
         }
     }
 }
+
 fn eval_symbol(s: &str, env: &mut Rc<RefCell<Env>>) -> Result<Object, String> {
     let val = env.borrow_mut().get(s);
     if val.is_none() {
