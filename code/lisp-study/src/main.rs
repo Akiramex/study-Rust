@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let reader = Interface::new("lisp_study").unwrap();
     let mut env = Rc::new(RefCell::new(env::Env::new()));
 
-    reader.set_prompt(format!("{}", PROMPT).as_ref()).unwrap();
+    reader.set_prompt(PROMPT).unwrap();
 
     while let ReadResult::Input(input) = reader.read_line().unwrap() {
         if input.eq("exit") {

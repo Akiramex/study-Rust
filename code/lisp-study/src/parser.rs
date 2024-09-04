@@ -16,6 +16,7 @@ impl fmt::Display for ParseError {
 
 impl Error for ParseError {}
 
+// 功能：将tokenize解析的Vec<Token>转化为Object
 pub fn parse(program: &str) -> Result<Object, ParseError> {
     let token_result = tokenize(program);
     if token_result.is_err() {
@@ -23,12 +24,13 @@ pub fn parse(program: &str) -> Result<Object, ParseError> {
             err: format!("{}", token_result.err().unwrap()),
         });
     }
-    let mut tokens = token_result.unwrap().into_iter().rev().collect::<Vec<_>>();
+    let mut tokens: Vec<Token> = token_result.unwrap().into_iter().rev().collect();
     let parsed_list = parse_list(&mut tokens)?;
 
     Ok(parsed_list)
 }
 
+// 解析出来都是一个Qbject::List
 pub fn parse_list(tokens:&mut Vec<Token>) -> Result<Object, ParseError> {
     let token = tokens.pop();
     if token != Some(Token::LParen) {
@@ -49,6 +51,8 @@ pub fn parse_list(tokens:&mut Vec<Token>) -> Result<Object, ParseError> {
         let t = token.unwrap();
         match t {
             Token::Integer(n) => list.push(Object::Integer(n)),
+            Token::Float(f) => list.push(Object::Float(f)),
+            Token::String(s) => list.push(Object::String(s)),
             Token::Symbol(s) => list.push(Object::Symbol(s)),
             Token::LParen => {
                 tokens.push(Token::LParen);
