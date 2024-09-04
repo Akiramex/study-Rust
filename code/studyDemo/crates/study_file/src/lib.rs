@@ -52,14 +52,14 @@ fn typed_example() -> Result<()> {
     Ok(())
 }
 
-fn print_an_address() -> Result<()> {
+fn write_an_address() -> Result<()> {
     let person = Person {
         name: "Akira".to_owned(),
         age: 10,
         phones: vec!["123".to_owned(), "456".to_owned()]
     };
 
-    let j = serde_json::to_string(&person)?;
+    let j = serde_json::to_string_pretty(&person)?;
 
     let mut file = File::create("data.json").expect("open File Error");
 
@@ -93,6 +93,6 @@ mod tests {
 
     #[test]
     fn function() {
-        print_an_address().unwrap();
+        write_an_address().unwrap();
     }
 }
