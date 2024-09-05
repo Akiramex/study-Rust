@@ -98,6 +98,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "study_lifetime"
+version = "0.1.0"
+
+[[package]]
 name = "study_thread"
 version = "0.1.0"
 dependencies = [
