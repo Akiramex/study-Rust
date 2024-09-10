@@ -13,7 +13,7 @@ pub async fn get_courses_for_teacher_db
     .fetch_all(pool)
     .await?;
 
-    let courses :Vec<Course> = rows.iter().map(|r| Course {
+    let courses: Vec<Course> = rows.iter().map(|r| Course {
         id: Some(r.id),
         teacher_id: r.teacher_id,
         name: r.name.clone(),
@@ -21,14 +21,14 @@ pub async fn get_courses_for_teacher_db
     })
     .collect();
 
-    if courses.is_empty() {
-        Err(MyError::NotFound("asd".into()))
-    } else {
-        Ok(courses)
+    match courses.is_empty() {
+        true => Err(MyError::NotFound("查询为空".into())),
+        false => Ok(courses),
     }
 }
 
-pub async fn get_course_for_details_db(pool: &PgPool, teacher_id: i32, course_id: i32) -> Course {
+pub async fn get_course_for_details_db
+(pool: &PgPool, teacher_id: i32, course_id: i32) -> Result<Course, MyError> {
     let row = sqlx::query!(
         r#"SELECT id, teacher_id, name, time
         FROM course
@@ -37,18 +37,23 @@ pub async fn get_course_for_details_db(pool: &PgPool, teacher_id: i32, course_id
         course_id
     )
     .fetch_one(pool)
-    .await
-    .unwrap();
+    .await;
 
-    Course {
-        id: Some(row.id),
-        teacher_id: row.teacher_id,
-        name: row.name.clone(),
-        time: Some(row.time.unwrap()),
+    if let Ok(row) = row {
+        Ok(Course {
+            id: Some(row.id),
+            teacher_id: row.teacher_id,
+            name: row.name.clone(),
+            time: Some(row.time.unwrap()),
+        })
+    } else {
+        Err(MyError::NotFound("Course didn't founded".into()))
     }
+    
+
 }
 
-pub async fn post_new_course_db(pool: &PgPool, new_course: Course) -> Course {
+pub async fn post_new_course_db(pool: &PgPool, new_course: Course) -> Result<Course, MyError> {
     let row = sqlx::query!(
         r#"INSERT INTO course (id, teacher_id, name)
             VALUES ($1, $2, $3)
@@ -58,13 +63,12 @@ pub async fn post_new_course_db(pool: &PgPool, new_course: Course) -> Course {
         new_course.name,
     )
     .fetch_one(pool)
-    .await
-    .unwrap();
+    .await?;
 
-    Course {
+    Ok(Course {
         id: Some(row.id),
         teacher_id: row.teacher_id,
         name: row.name.clone(),
         time: Some(row.time.unwrap()),
-    }
+    })
 }
