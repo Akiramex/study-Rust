@@ -60,6 +60,28 @@ pub async fn get_courses_for_teacher(
     }
 }
 
+pub async fn get_course_detail(
+    app_state: web::Data<AppState>, 
+    params: web::Path<(usize, usize)>,
+) -> HttpResponse {
+    let (teacher_id, course_id) = *params
+
+    let select_course = app_state
+        .courses
+        .lock()
+        .unwrap()
+        .clone()
+        .into_iter()
+        .find(|x| x.teacher_id == teacher_id && x.id == Some(course_id))
+        .ok_or("Course not found");
+
+    if let Ok(course) = select_course {
+        HttpResponse::Ok().json(course)
+    } else {
+        HttpResponse::Ok().json("Course not found".to_string())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -89,6 +111,18 @@ mod tests {
         let teacher_id: web::Path<(usize)> = web::Path::from((1));
         let resp = get_courses_for_teacher(app_state, teacher_id).await;
 
+        assert_eq!(resp.status(), StatusCode::OK);
+    }
+
+    #[actix_web::test]
+    async fn get_one_course_success() {
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            courses: Mutex::new(vec![]),
+        });
+        let params: web::Path<(usize, usize)> = web::Path::from((1, 1));
+        let resp = get_course_detail(app_state, params).await;
         assert_eq!(resp.status(), StatusCode::OK);
     }
 

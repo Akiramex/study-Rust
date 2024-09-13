@@ -62,8 +62,15 @@ mod tests {
         let course = web::Json(Course {
             teacher_id: 1,
             name: "Test course".into(),
-            id: Some(3),
+            id: 3,
             time: None,
+            description: None,
+            format: None,
+            structure: None,
+            duration:None,
+            price:None,
+            language: None,
+            level: None
         });
 
         let resp = new_course(course, app_state).await.unwrap();

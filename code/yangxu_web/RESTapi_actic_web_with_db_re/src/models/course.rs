@@ -38,7 +38,7 @@ pub struct CreateCourse {
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct UpdateCourse {
-    pub name: String,
+    pub name: Option<String>,
     pub description: Option<String>,
     pub format: Option<String>,
     pub structure: Option<String>,
