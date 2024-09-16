@@ -30,11 +30,11 @@ pub fn course_routes(cfg: &mut web::ServiceConfig) {
 
 pub fn teacher_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/teacher")
-            .route("", web::get().to(get_all_teachers))
+        web::scope("/teachers")
+            .route("/", web::get().to(get_all_teachers))
             .route("/{teacher_id}", web::get().to(get_teacher_details))
             .route(
-                "",
+                "/",
                 web::post().to(post_new_teacher)
             )
             .route("/{teacher_id}", web::delete().to(delete_teacher))

@@ -1,5 +1,6 @@
 use actix_files as fs;
 use actix_web::web;
+use crate::wa::handlers::*;
 
 pub fn app_config(config: &mut web::ServiceConfig) {
     config.service(
