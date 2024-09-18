@@ -1,8 +1,9 @@
-use error::AppError;
+use error::Error;
 use salvo::prelude::*;
 
 mod error;
 mod prelude;
+mod models;
 use crate::prelude::*;
 
 
@@ -14,7 +15,7 @@ async fn get_all_user() -> &'static str{
 #[handler]
 async fn get_user_by_id(req: &mut Request) -> Result<String> {
     let id = req.param::<i64>("id")
-        .ok_or(AppError::Generic("a".into()))?;
+        .ok_or(Error::Generic("a".into()))?;
 
     Ok(format!("get user {id}"))
 }

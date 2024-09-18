@@ -8,7 +8,7 @@ use salvo::{
 };
 
 #[derive(thiserror::Error, Debug)]
-pub enum AppError {
+pub enum Error {
     #[error("Generic error {0}")]
     Generic(String),
 
@@ -17,7 +17,7 @@ pub enum AppError {
 }
 
 #[async_trait]
-impl Writer for AppError {
+impl Writer for Error {
     async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
         res.render(Text::Plain(self.to_string()));
     }
