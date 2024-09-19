@@ -1,3 +1,5 @@
-use crate::error::AppError;
+pub use crate::error::Error;
 
-pub type Result<T> = std::result::Result<T, AppError>;
+pub use salvo::prelude::*;
+
+pub type Result<T> = std::result::Result<T, Error>;
