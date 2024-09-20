@@ -1,12 +1,19 @@
 [package]
-name = "simple-api-web"
+name = "simple-api-web-db"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 chrono = { version = "0.4.38", features = ["serde"] }
+dotenv = "0.15.0"
 salvo = { version = "0.72.0", features = ["affix-state"] }
 serde = { version = "1.0.210", features = ["derive"] }
+sqlx = { version = "0.8.2", default-features = false, features = [
+    "postgres",
+    "runtime-tokio-rustls",
+    "macros",
+    "chrono",
+] }
 thiserror = "1.0.63"
 tokio = { version = "1.40.0", features = ["macros"] }
 tracing = "0.1.40"

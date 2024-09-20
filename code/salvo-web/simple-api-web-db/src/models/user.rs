@@ -2,22 +2,22 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 
-#[derive(Debug, Default, Clone, Serialize)]
+#[derive(Debug, Default, Clone, Serialize, sqlx::FromRow)]
 pub struct User {
     pub id: i32,
     pub name: String,
     pub password: String,
-    pub state: u8,
-    pub time: NaiveDateTime
+    pub status: i32,
+    pub time: Option<NaiveDateTime>
 }
 
 impl User {
     pub fn is_activate(&self) -> bool {
-        self.state == 0
+        self.status == 0
     }
 
     pub fn set_delete(&mut self) {
-        self.state = 1;
+        self.status = 1;
     }
 }
 

@@ -64,7 +64,7 @@ pub async fn get_course_detail(
     app_state: web::Data<AppState>, 
     params: web::Path<(usize, usize)>,
 ) -> HttpResponse {
-    let (teacher_id, course_id) = *params
+    let (teacher_id, course_id) = *params;
 
     let select_course = app_state
         .courses
