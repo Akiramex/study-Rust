@@ -1,0 +1,11 @@
+[package]
+name = "custom_request"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+salvo = "0.72.2"
+serde = { version = "1.0.210", features = ["derive"] }
+tokio = { version = "1.40.0", features = ["macros"] }
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
