@@ -10,13 +10,9 @@ fn mobile_api_routers() -> Router {
     Router::with_path("training/mobile/api")
             .push(
                 Router::with_path("user")
-                    .get(get_all_user)
+                    .get(get_user)
                     .post(create_user)
-                    .push(
-                        Router::with_path("<id>")
-                            .get(get_user_by_id)
-                            .delete(delete_user_by_id)
-                    )
-
-            )
+                    .put(update_user_by_id)
+                    .delete(delete_user_by_id)
+                )
 }

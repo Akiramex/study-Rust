@@ -1,6 +1,6 @@
 mod error;
 mod prelude;
-//mod routers;
+mod routers;
 mod models;
 mod handlers;
 mod database;
@@ -10,6 +10,7 @@ use std::env;
 use std::sync::OnceLock;
 use sqlx::{PgPool, Pool};
 use salvo::prelude::*;
+use crate::routers::route;
 
 pub static DB_POOL: OnceLock<PgPool> = OnceLock::new();
 
@@ -31,7 +32,7 @@ async fn main() {
 
     let acceptor = TcpListener::new("127.0.0.1:5800").bind().await;
 
-    let router = Router::new();
+    let router = route();
 
     Server::new(acceptor).serve(router).await;
 }

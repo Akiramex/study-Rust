@@ -11,16 +11,6 @@ pub struct User {
     pub time: Option<NaiveDateTime>
 }
 
-impl User {
-    pub fn is_activate(&self) -> bool {
-        self.status == 0
-    }
-
-    pub fn set_delete(&mut self) {
-        self.status = 1;
-    }
-}
-
 #[derive(Deserialize)]
 pub struct CreateUser {
     pub name: String,
@@ -28,17 +18,26 @@ pub struct CreateUser {
 }
 
 
+#[derive(Deserialize, Default)]
+pub struct UpdateUser {
+    pub name: Option<String>,
+    pub password: Option<String>,
+    pub status: Option<i32>,
+}
+
 #[derive(Serialize)]
 pub struct ResponseUser {
+    pub id: i32,
     pub name: String,
-    pub password: String,
+    pub time: Option<NaiveDateTime>
 }
 
 impl From<User> for ResponseUser {
     fn from(value: User) -> Self {
         ResponseUser {
+            id: value.id,
             name: value.name.clone(),
-            password: value.password.clone(),
+            time: value.time
         }
     }
 }
