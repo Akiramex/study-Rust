@@ -10,7 +10,7 @@ use std::env;
 use std::sync::OnceLock;
 use sqlx::{PgPool, Pool};
 use salvo::prelude::*;
-use crate::routers::route;
+use crate::routers::router;
 
 pub static DB_POOL: OnceLock<PgPool> = OnceLock::new();
 
@@ -32,7 +32,7 @@ async fn main() {
 
     let acceptor = TcpListener::new("127.0.0.1:5800").bind().await;
 
-    let router = route();
+    let router = router();
 
     Server::new(acceptor).serve(router).await;
 }

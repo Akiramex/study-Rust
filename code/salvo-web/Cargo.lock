@@ -358,7 +358,7 @@ dependencies = [
 name = "custom_request"
 version = "0.1.0"
 dependencies = [
- "salvo",
+ "salvo 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "tokio",
  "tracing",
@@ -737,7 +737,7 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 name = "hello-world"
 version = "0.1.0"
 dependencies = [
- "salvo",
+ "salvo 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -998,7 +998,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "jsonwebtoken",
- "salvo",
+ "salvo 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "time",
  "tokio",
@@ -1735,10 +1735,20 @@ version = "0.72.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5340fe23116429e3c4a3ebc2949a623c6dd4cabf230308e0e2b62374deb89c54"
 dependencies = [
- "salvo-jwt-auth",
- "salvo-proxy",
- "salvo_core",
+ "salvo-jwt-auth 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "salvo-proxy 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "salvo_core 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "salvo_extra",
+]
+
+[[package]]
+name = "salvo"
+version = "0.72.3"
+source = "git+https://github.com/salvo-rs/salvo#81d3e86844045be0b49475d8e020b440b93288f6"
+dependencies = [
+ "salvo-jwt-auth 0.72.3 (git+https://github.com/salvo-rs/salvo)",
+ "salvo-proxy 0.72.3 (git+https://github.com/salvo-rs/salvo)",
+ "salvo_core 0.72.3 (git+https://github.com/salvo-rs/salvo)",
 ]
 
 [[package]]
@@ -1753,7 +1763,26 @@ dependencies = [
  "hyper-rustls",
  "hyper-util",
  "jsonwebtoken",
- "salvo_core",
+ "salvo_core 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "salvo-jwt-auth"
+version = "0.72.3"
+source = "git+https://github.com/salvo-rs/salvo#81d3e86844045be0b49475d8e020b440b93288f6"
+dependencies = [
+ "base64 0.22.1",
+ "bytes",
+ "http-body-util",
+ "hyper-rustls",
+ "hyper-util",
+ "jsonwebtoken",
+ "salvo_core 0.72.3 (git+https://github.com/salvo-rs/salvo)",
  "serde",
  "serde_json",
  "thiserror",
@@ -1774,7 +1803,24 @@ dependencies = [
  "hyper-util",
  "percent-encoding",
  "reqwest",
- "salvo_core",
+ "salvo_core 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "salvo-proxy"
+version = "0.72.3"
+source = "git+https://github.com/salvo-rs/salvo#81d3e86844045be0b49475d8e020b440b93288f6"
+dependencies = [
+ "fastrand",
+ "futures-util",
+ "hyper",
+ "hyper-rustls",
+ "hyper-util",
+ "percent-encoding",
+ "reqwest",
+ "salvo_core 0.72.3 (git+https://github.com/salvo-rs/salvo)",
  "tokio",
  "tracing",
 ]
@@ -1784,6 +1830,16 @@ name = "salvo-serde-util"
 version = "0.72.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc667d103210a545a1a2957b3149260d60d22ab037cabc66276b86ef2125bbcc"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "salvo-serde-util"
+version = "0.72.3"
+source = "git+https://github.com/salvo-rs/salvo#81d3e86844045be0b49475d8e020b440b93288f6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1822,7 +1878,50 @@ dependencies = [
  "pin-project",
  "rand",
  "regex",
- "salvo_macros",
+ "salvo_macros 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde",
+ "serde-xml-rs",
+ "serde_json",
+ "sync_wrapper 1.0.1",
+ "tempfile",
+ "thiserror",
+ "tokio",
+ "tokio-rustls",
+ "tokio-util",
+ "tracing",
+]
+
+[[package]]
+name = "salvo_core"
+version = "0.72.3"
+source = "git+https://github.com/salvo-rs/salvo#81d3e86844045be0b49475d8e020b440b93288f6"
+dependencies = [
+ "async-trait",
+ "base64 0.22.1",
+ "bytes",
+ "cookie",
+ "enumflags2",
+ "form_urlencoded",
+ "futures-channel",
+ "futures-util",
+ "headers",
+ "http",
+ "http-body-util",
+ "hyper",
+ "hyper-rustls",
+ "hyper-util",
+ "indexmap",
+ "mime",
+ "mime-infer",
+ "multer",
+ "multimap",
+ "nix",
+ "parking_lot",
+ "percent-encoding",
+ "pin-project",
+ "rand",
+ "regex",
+ "salvo_macros 0.72.3 (git+https://github.com/salvo-rs/salvo)",
  "serde",
  "serde-xml-rs",
  "serde_json",
@@ -1847,7 +1946,7 @@ dependencies = [
  "http-body-util",
  "hyper",
  "pin-project",
- "salvo_core",
+ "salvo_core 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "serde_json",
  "tokio",
@@ -1867,7 +1966,20 @@ dependencies = [
  "proc-macro2",
  "quote",
  "regex",
- "salvo-serde-util",
+ "salvo-serde-util 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "syn",
+]
+
+[[package]]
+name = "salvo_macros"
+version = "0.72.3"
+source = "git+https://github.com/salvo-rs/salvo#81d3e86844045be0b49475d8e020b440b93288f6"
+dependencies = [
+ "proc-macro-crate",
+ "proc-macro2",
+ "quote",
+ "regex",
+ "salvo-serde-util 0.72.3 (git+https://github.com/salvo-rs/salvo)",
  "syn",
 ]
 
@@ -2017,7 +2129,7 @@ name = "simple-api-web"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "salvo",
+ "salvo 0.72.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "thiserror",
  "tokio",
@@ -2031,7 +2143,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "dotenv",
- "salvo",
+ "salvo 0.72.3 (git+https://github.com/salvo-rs/salvo)",
  "serde",
  "sqlx",
  "thiserror",

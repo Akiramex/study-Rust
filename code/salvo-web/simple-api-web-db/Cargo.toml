@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 chrono = { version = "0.4.38", features = ["serde"] }
 dotenv = "0.15.0"
-salvo = { version = "0.72.0", features = ["affix-state"] }
+salvo = { git = "https://github.com/salvo-rs/salvo" }
 serde = { version = "1.0.210", features = ["derive"] }
 sqlx = { version = "0.8.2", default-features = false, features = [
     "postgres",
