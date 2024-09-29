@@ -1,4 +1,4 @@
-use crate::dp_pool;
+use crate::database::db_pool;
 use crate::prelude::*;
 use crate::models::user::*;
 
@@ -7,7 +7,7 @@ pub async fn get_all_user_db() -> Result<Vec<User>>{
         User,
         "SELECT * FROM sys_user WHERE status = 0",
     )
-    .fetch_all(dp_pool())
+    .fetch_all(db_pool())
     .await?;
 
     Ok(rows)
@@ -19,7 +19,7 @@ pub async fn get_user_by_id_db(user_id: i32) -> Result<User> {
         "SELECT * FROM sys_user WHERE id = $1 and status = 0",
         user_id
     )
-    .fetch_one(dp_pool())
+    .fetch_one(db_pool())
     .await?;
 
     Ok(row)
@@ -32,7 +32,7 @@ pub async fn delete_user_by_id_db(user_id: i32) -> Result<User> {
         "SELECT * FROM sys_user WHERE id = $1",
         user_id
     )
-    .fetch_one(dp_pool())
+    .fetch_one(db_pool())
     .await?;
 
     Ok(row)
@@ -44,7 +44,7 @@ pub async fn update_user_by_id_db(user_id: i32, update_user: UpdateUser) -> Resu
         "SELECT * FROM sys_user WHERE id = $1 and status = 0",
         user_id
     )
-    .fetch_one(dp_pool())
+    .fetch_one(db_pool())
     .await?;
 
     let name = if let Some(name) = update_user.name { name } else { current_user_row.name };
@@ -62,7 +62,7 @@ pub async fn update_user_by_id_db(user_id: i32, update_user: UpdateUser) -> Resu
         status,
         user_id,
     )
-    .fetch_one(dp_pool())
+    .fetch_one(db_pool())
     .await?;
 
     Ok(user_row)
@@ -77,7 +77,7 @@ pub async fn create_user_db(new_user: CreateUser) -> Result<User> {
         new_user.name,
         new_user.password,
     )
-    .fetch_one(dp_pool())
+    .fetch_one(db_pool())
     .await?;
 
     Ok(row)

@@ -13,7 +13,7 @@ pub enum Error {
     IO(#[from] std::io::Error),
 
     #[error(transparent)]
-    SalvoParseError(#[from] salvo::http::ParseError),
+    SalvoPE(#[from] salvo::http::ParseError),
 
     #[error(transparent)]
     DB(#[from] sqlx::Error),
@@ -26,7 +26,7 @@ impl Writer for Error {
         let code = match self {
             Self::Generic(_) => 1,
             Self::IO(_) => 2,
-            Self::SalvoParseError(_) =>3,
+            Self::SalvoPE(_) =>3,
             Self::DB(_) => 4,
         };
 

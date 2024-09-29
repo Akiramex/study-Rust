@@ -28,7 +28,7 @@ pub async fn get_user(req: &mut Request, res: &mut Response) -> Result<()> {
                 Ok(())
             }
             _ => {
-                Err(Error::SalvoParseError(err))
+                Err(Error::SalvoPE(err))
             }
         }
         Ok(id) => {
