@@ -13,6 +13,18 @@ pub async fn get_all_user_db() -> Result<Vec<User>>{
     Ok(rows)
 }
 
+pub async fn get_user_by_name(user_name: &String) -> Result<User> {
+    let row = sqlx::query_as!(
+        User,
+        "SELECT * FROM sys_user WHERE name = $1 and status = 0",
+        user_name
+    )
+    .fetch_one(db_pool())
+    .await?;
+
+    Ok(row)
+}
+
 pub async fn get_user_by_id_db(user_id: i32) -> Result<User> {
     let row = sqlx::query_as!(
         User,

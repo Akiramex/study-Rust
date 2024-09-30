@@ -1,5 +1,5 @@
 use salvo::prelude::*;
-use crate::handlers::user::*;
+use crate::handlers::{login::*, user::*};
 
 pub fn router() -> Router {
     Router::new()
@@ -8,6 +8,9 @@ pub fn router() -> Router {
 
 fn mobile_api_routes() -> Router {
     Router::with_path("training/mobile/api")
+            .push(
+                Router::with_path("login").get(login)
+            )
             .push(
                 Router::with_path("user")
                     .get(get_user)

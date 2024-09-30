@@ -4,10 +4,12 @@ mod routers;
 mod models;
 mod handlers;
 mod database;
+mod utils;
 
 use dotenv::dotenv;
 use salvo::prelude::*;
 use crate::routers::router;
+
 
 #[tokio::main]
 async fn main() {
@@ -20,4 +22,6 @@ async fn main() {
     let router = router();
 
     Server::new(acceptor).serve(router).await;
+    
+    
 }
