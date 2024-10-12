@@ -37,5 +37,5 @@ fn main() {
     let file = file!();
     println!("{file}");
 
-    read_with_buffer();
+    // read_with_buffer();
 }

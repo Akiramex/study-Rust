@@ -60,7 +60,7 @@ fn function2() {
     println!("started changed");
 }
 
-use std::thread;
+use std::{env, thread};
 use std::sync::Once;
 
 static mut VAL: usize = 0;
@@ -87,7 +87,29 @@ fn function3() {
     println!("{}", unsafe { VAL });
 }
 
+use study_thread::ExProgram;
+use std::time::Duration;
 
 fn main() {
-    function3();
+    //function3();
+
+    let sleep_program = ExProgram{path: "C:\\Akira\\1_Code\\rust\\study-Rust\\code\\studyDemo\\a-print-program.exe", opt: None};
+    
+    thread::spawn(move ||{
+        loop {
+            let mut child = sleep_program.run();
+
+            child.wait().expect("msg");
+
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    // 获取当前工作目录
+    let current_dir = env::current_dir().expect("Failed to get current directory");
+
+    // 打印当前工作目录
+    println!("Current directory: {:?}", current_dir);
+
+    thread::sleep(Duration::from_secs(20));
 }
