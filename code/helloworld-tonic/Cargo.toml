@@ -1,0 +1,22 @@
+[package]
+name = "helloworld-tonic"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]# 用来运行 HelloWorld gRPC 服务器的可执行文件
+name = "server"
+path ="src/server.rs"
+
+[[bin]]# 用来运行 HelloWorld gRPC 客户端的可执行文件
+name = "client"
+path ="src/client.rs"
+
+[dependencies]
+prost = "0.13.3"
+tokio = { version = "1.40.0", features = ["macros", "rt-multi-thread"] }
+tonic = "0.12.3"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+
+[build-dependencies]
+tonic-build ="0.12.3"
