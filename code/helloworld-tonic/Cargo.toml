@@ -3,6 +3,10 @@ name = "helloworld-tonic"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "mult_client"
+path ="src/mult_client.rs"
+
 [[bin]]# 用来运行 HelloWorld gRPC 服务器的可执行文件
 name = "server"
 path ="src/server.rs"

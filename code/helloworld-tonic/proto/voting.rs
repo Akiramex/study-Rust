@@ -50,6 +50,16 @@ pub struct VotingResponse {
     #[prost(string, tag = "1")]
     pub confirmation: ::prost::alloc::string::String,
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HelloRequest {
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HelloResponse {
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod voting_client {
     #![allow(
@@ -159,6 +169,24 @@ pub mod voting_client {
             req.extensions_mut().insert(GrpcMethod::new("voting.Voting", "Vote"));
             self.inner.unary(req, path, codec).await
         }
+        pub async fn hello(
+            &mut self,
+            request: impl tonic::IntoRequest<super::HelloRequest>,
+        ) -> std::result::Result<tonic::Response<super::HelloResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static("/voting.Voting/Hello");
+            let mut req = request.into_request();
+            req.extensions_mut().insert(GrpcMethod::new("voting.Voting", "Hello"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -178,6 +206,10 @@ pub mod voting_server {
             &self,
             request: tonic::Request<super::VotingRequest>,
         ) -> std::result::Result<tonic::Response<super::VotingResponse>, tonic::Status>;
+        async fn hello(
+            &self,
+            request: tonic::Request<super::HelloRequest>,
+        ) -> std::result::Result<tonic::Response<super::HelloResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct VotingServer<T> {
@@ -283,6 +315,49 @@ pub mod voting_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let method = VoteSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/voting.Voting/Hello" => {
+                    #[allow(non_camel_case_types)]
+                    struct HelloSvc<T: Voting>(pub Arc<T>);
+                    impl<T: Voting> tonic::server::UnaryService<super::HelloRequest>
+                    for HelloSvc<T> {
+                        type Response = super::HelloResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::HelloRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Voting>::hello(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let method = HelloSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

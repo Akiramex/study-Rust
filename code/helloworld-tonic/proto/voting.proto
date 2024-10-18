@@ -4,6 +4,7 @@ package voting;
 
 service Voting {
   rpc Vote(VotingRequest) returns (VotingResponse);
+  rpc Hello(HelloRequest) returns (HelloResponse);
 }
 
 message VotingRequest {
@@ -16,4 +17,14 @@ message VotingRequest {
   Vote vote = 2;
 }
 
-message VotingResponse { string confirmation = 1; }
+message VotingResponse { 
+  string confirmation = 1; 
+}
+
+message HelloRequest {
+  string name = 1; 
+}
+
+message HelloResponse {
+  string message = 1; 
+}
