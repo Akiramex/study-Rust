@@ -1,4 +1,4 @@
-use crate::database::db_pool;
+use crate::db_pool;
 use crate::prelude::*;
 use crate::models::user::*;
 
