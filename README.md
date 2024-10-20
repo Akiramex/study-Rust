@@ -23,7 +23,7 @@ https://acl.readthedocs.io/en/latest/zhCN/ch2-cn.html
 ## 学习网址
 
 https://cheats.rs/
-
+https://github.com/rust-unofficial/awesome-rust
 
 
 ## 找库
