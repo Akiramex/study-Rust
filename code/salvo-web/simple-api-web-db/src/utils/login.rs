@@ -32,7 +32,7 @@ pub fn create_user_session(session_id: String, _client_ip: String, _user: &User)
         session_id
     };
 
-    // 把client_ip 和 user 弄成一个结构体序列化放到 value 里面 todo
+    // todo 把client_ip 和 user 弄成一个结构体序列化放到 value 里面 
     rs_set_value(&session_id, "")
         .map_err(|err| Error::Generic(err.to_string()))?;
 

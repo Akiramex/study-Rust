@@ -1,7 +1,11 @@
 use salvo::prelude::*;
 
 use crate::prelude::*;
-use crate::database::user::get_user_by_name;
+use crate::database::{
+    user::get_user_by_name,
+    redis::rs_set_value,
+};
+
 use crate::utils::login::*;
 use crate::models::{
     user::LoginParams,
