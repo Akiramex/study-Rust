@@ -1,3 +1,5 @@
+use std::thread;
+
 use tokio;
 
 async fn foo() {
@@ -33,4 +35,26 @@ fn main() {
     .build()
     .unwrap()
     .block_on( foo());
+
+
+    let _ = thread::spawn(||{
+        tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            tokio::spawn(async {
+                tokio::time::sleep(std::time::Duration::from_secs(3)).await;
+                println!("Zzzzz")
+            }).await;
+
+            tokio::spawn(async {
+                println!("Studying")
+            }).await;
+
+        })
+    });
+
+    std::thread::sleep(std::time::Duration::from_secs(5));
+    
 }

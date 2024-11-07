@@ -2,3 +2,14 @@
 
 members = ["demo/*"]
 
+workspace.resolver = 2
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[workspace.dependencies]
+chrono = "0.4.38"
+tokio = { version = "1.40.0", features = ["full"] }
+
+## workspace member
