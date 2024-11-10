@@ -43,7 +43,7 @@ fn main() {
         .build()
         .unwrap()
         .block_on(async {
-            tokio::spawn(async {
+            let a = tokio::spawn(async {
                 tokio::time::sleep(std::time::Duration::from_secs(3)).await;
                 println!("Zzzzz")
             }).await;
