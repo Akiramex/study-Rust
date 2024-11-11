@@ -1,10 +1,7 @@
 use salvo::prelude::*;
 
 use crate::prelude::*;
-use crate::database::{
-    user::get_user_by_name,
-    redis::rs_set_value,
-};
+use crate::database::user::get_user_by_name;
 
 use crate::utils::login::*;
 use crate::models::{
@@ -26,7 +23,6 @@ pub async fn login(req: &mut Request, res: &mut Response) -> Result<()> {
     }
     let session = create_user_session(String::new(), String::new(), &user)?;
 
-    
     res.render(Json(ResponseInfo::<String> {
         code : 0,
         total: 0,

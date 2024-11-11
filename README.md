@@ -29,3 +29,5 @@ https://github.com/rust-unofficial/awesome-rust
 ## 找库
 
 https://lib.rs
+
+https://rusty.course.rs/

@@ -5,9 +5,9 @@ use crate::utils::login::compare_session;
 
 
 #[handler]
-pub async fn check_auth(req: &mut Request, depot: &mut Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
+pub async fn check_auth(req: &mut Request, _depot: &mut Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
     if let Some(sessionid) =  req.query::<String>("sessionid") {
-        if let true = compare_session(&sessionid) {
+        if compare_session(&sessionid) {
             //todo 从redis取出里面的值，放到depot里面
             return;
         }
