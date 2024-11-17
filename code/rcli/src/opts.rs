@@ -1,5 +1,5 @@
-use std::{fmt, str::FromStr};
 use clap::Parser;
+use std::{fmt, str::FromStr};
 
 #[derive(Debug, Parser)]
 #[command(name = "rcli", version, author, about, long_about = None)]
@@ -12,12 +12,14 @@ pub struct Opts {
 pub enum SubCommand {
     #[command(name = "csv", about = "Operator csv file")]
     Csv(CsvOpts),
+    #[command(name = "genpass", about = "Generate a random password")]
+    GenPass(GenPassOpts),
 }
 
 #[derive(Debug, Clone, Copy)]
 pub enum OutputFormat {
     Json,
-    Yaml
+    Yaml,
 }
 
 #[derive(Debug, Parser)]
@@ -37,6 +39,23 @@ pub struct CsvOpts {
     #[arg(long, default_value_t = false, help = "CSV has header or not")]
     pub header: bool,
 }
+#[derive(Debug, Parser)]
+pub struct GenPassOpts {
+    #[arg(short, long, default_value_t = 16)]
+    pub length: u8,
+
+    #[arg(long, default_value_t = true)]
+    pub uppercase: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub lowercase: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub number: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub symbol: bool,
+}
 
 // 用户输入检查
 fn verity_input_file(filename: &str) -> Result<String, String> {
@@ -55,7 +74,7 @@ impl From<OutputFormat> for &'static str {
     fn from(format: OutputFormat) -> Self {
         match format {
             OutputFormat::Json => "json",
-            OutputFormat::Yaml => "yaml"
+            OutputFormat::Yaml => "yaml",
         }
     }
 }
@@ -68,12 +87,12 @@ impl fmt::Display for OutputFormat {
 
 impl FromStr for OutputFormat {
     type Err = anyhow::Error;
-    
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_lowercase().as_str() {
             "json" => Ok(OutputFormat::Json),
             "yaml" => Ok(OutputFormat::Yaml),
-            v => anyhow::bail!("Unsupported format: {v}")
+            v => anyhow::bail!("Unsupported format: {v}"),
         }
     }
 }

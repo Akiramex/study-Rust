@@ -2,7 +2,7 @@ use clap::Parser;
 use rcli::{process_csv, Opts, SubCommand};
 // rcli csv -i input.csv -o output.json --header -d ','
 
-fn main() -> anyhow::Result<()>{
+fn main() -> anyhow::Result<()> {
     let opts = Opts::parse();
     match opts.cmd {
         SubCommand::Csv(opts) => {
@@ -12,9 +12,11 @@ fn main() -> anyhow::Result<()>{
                 format!("output.{}", opts.format)
             };
             process_csv(&opts.input, output, opts.format)?
+        },
+        SubCommand::GenPass(opts) => {
+            println!("{:?}", opts)
         }
     }
 
     Ok(())
 }
-
