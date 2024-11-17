@@ -1,7 +1,10 @@
 use anyhow::Result;
+use serde_json::Value;
 use std::fs;
 use csv::Reader;
 use serde::{Deserialize, Serialize};
+
+use crate::opts::OutputFormat;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -23,16 +26,21 @@ struct Gun {
     law: String
 }
 
-pub fn process_csv(input: &str, output: &str) -> Result<()> {
+pub fn process_csv(input: &str, output: String, format: OutputFormat) -> Result<()> {
     let mut reader = Reader::from_path(input)?;
     let mut ret = Vec::with_capacity(128);
-    for result in reader.deserialize() {
-        let record: Gun = result?;
-        ret.push(record);
+    let header = reader.headers()?.clone();
+    for result in reader.records() {
+        let record= result?;
+        let json_value = header.iter().zip(record.iter()).collect::<Value>();
+        ret.push(json_value);
     }
 
-    let json = serde_json::to_string_pretty(&ret)?;
-    fs::write(output, json)?;
+    let content = match format {
+        OutputFormat::Json => serde_json::to_string_pretty(&ret)?,
+        OutputFormat::Yaml => serde_yaml::to_string(&ret)?
+    };
 
+    fs::write(output, content)?;
     Ok(())
 }
