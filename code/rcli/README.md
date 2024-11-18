@@ -31,3 +31,7 @@ select * from read_csv('path/to/file.csv', auto_detect=true)
 ## git
 
 git commit -a
+
+## rand
+
+使用rand库生成随机数
