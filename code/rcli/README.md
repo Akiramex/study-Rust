@@ -35,3 +35,7 @@ git commit -a
 ## rand
 
 使用rand库生成随机数
+
+## zxcvbn
+
+查看密码强度
