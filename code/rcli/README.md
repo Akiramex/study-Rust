@@ -39,3 +39,11 @@ git commit -a
 ## zxcvbn
 
 查看密码强度
+
+## base64
+
+进行base64的编解码
+
+## box && dyn
+
+结合box和dyn进行类型擦除
