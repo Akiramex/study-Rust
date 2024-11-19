@@ -47,3 +47,9 @@ git commit -a
 ## box && dyn
 
 结合box和dyn进行类型擦除
+
+## Hash库 blake3
+
+加密算法
+
+## 非对称加密 ed25519_dalek 
