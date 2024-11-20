@@ -2,7 +2,7 @@ use std::{fmt, str::FromStr};
 
 use clap::Parser;
 
-use super::verity_input_file;
+use super::verity_file;
 
 #[derive(Debug, Parser)]
 pub enum TextSubCommand {
@@ -14,10 +14,10 @@ pub enum TextSubCommand {
 
 #[derive(Debug, Parser)]
 pub struct TextSignOpts {
-    #[arg(short, long, value_parser = verity_input_file, default_value = "-")]
+    #[arg(short, long, value_parser = verity_file, default_value = "-")]
     pub input: String,
 
-    #[arg(short, long, value_parser = verity_input_file, default_value = "-")]
+    #[arg(short, long, value_parser = verity_file)]
     pub key: String,
 
     #[arg(long, value_parser = parse_format, default_value = "blake3")]
@@ -25,22 +25,21 @@ pub struct TextSignOpts {
 }
 
 #[derive(Debug, Parser)]
-pub struct  TextVerityOpts {
-    #[arg(short, long, value_parser = verity_input_file, default_value = "-")]
+pub struct TextVerityOpts {
+    #[arg(short, long, value_parser = verity_file, default_value = "-")]
     pub input: String,
 
-    #[arg(short, long, value_parser = verity_input_file, default_value = "-")]
+    #[arg(short, long, value_parser = verity_file)]
     pub key: String,
 
     #[arg(long, value_parser = parse_format, default_value = "blake3")]
     pub format: TextSignFormat,
 
     #[arg(short, long)]
-    pub sig: String
+    pub sig: String,
 }
 
-fn parse_format(input: &str) -> Result<TextSignFormat, anyhow::Error>
-{
+fn parse_format(input: &str) -> Result<TextSignFormat, anyhow::Error> {
     input.parse()
 }
 

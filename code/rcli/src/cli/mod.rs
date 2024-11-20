@@ -10,6 +10,7 @@ use clap::Parser;
 pub use self::{
     base64::{Base64Format, Base64SubCommand},
     csv::OutputFormat,
+    text::{TextSignFormat, TextSubCommand},
 };
 
 #[derive(Debug, Parser)]
@@ -27,10 +28,12 @@ pub enum SubCommand {
     GenPass(GenPassOpts),
     #[command(subcommand)]
     Base64(Base64SubCommand),
+    #[command(subcommand)]
+    Text(TextSubCommand),
 }
 
 // 用户输入检查
-fn verity_input_file(filename: &str) -> Result<String, &'static str> {
+fn verity_file(filename: &str) -> Result<String, &'static str> {
     // if input is "-" or file exists
     if filename == "-" || std::path::Path::new(filename).exists() {
         Ok(filename.into())
@@ -45,9 +48,9 @@ mod tests {
 
     #[test]
     fn test_verify_input_file() {
-        assert_eq!(verity_input_file("-"), Ok("-".into()));
-        assert_eq!(verity_input_file("*"), Err("File does not exist"));
-        assert_eq!(verity_input_file("Cargo.toml"), Ok("Cargo.toml".into()));
-        assert_eq!(verity_input_file("no-exist"), Err("File does not exist"));
+        assert_eq!(verity_file("-"), Ok("-".into()));
+        assert_eq!(verity_file("*"), Err("File does not exist"));
+        assert_eq!(verity_file("Cargo.toml"), Ok("Cargo.toml".into()));
+        assert_eq!(verity_file("no-exist"), Err("File does not exist"));
     }
 }
