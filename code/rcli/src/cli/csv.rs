@@ -1,6 +1,6 @@
-use std::{fmt, str::FromStr};
-use clap::Parser;
 use super::verity_file;
+use clap::Parser;
+use std::{fmt, str::FromStr};
 
 #[derive(Debug, Clone, Copy)]
 pub enum OutputFormat {

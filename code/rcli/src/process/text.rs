@@ -1,10 +1,10 @@
+use super::process_genpass;
 use crate::{get_reader, TextSignFormat};
 use anyhow::Result;
 use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine as _};
 use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
-use std::{fs, io::Read, path::Path};
 use rand::rngs::OsRng;
-use super::process_genpass;
+use std::{fs, io::Read, path::Path};
 
 type GenerateKey = Vec<Vec<u8>>;
 
@@ -190,7 +190,7 @@ impl KeyLoader for Ed25519Verifier {
 
 pub trait KeyGenerator {
     fn generate() -> Result<GenerateKey>;
-} 
+}
 
 impl KeyGenerator for Blake3 {
     fn generate() -> Result<GenerateKey> {
@@ -207,7 +207,7 @@ impl KeyGenerator for Ed25519Signer {
         let pk: Vec<u8> = sk.verifying_key().as_bytes().to_vec();
         let sk: Vec<u8> = sk.as_bytes().to_vec();
 
-        Ok(vec![sk, pk]) 
+        Ok(vec![sk, pk])
     }
 }
 #[cfg(test)]
@@ -215,19 +215,19 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_blake3_sign_verify() -> Result<()>{
+    fn test_blake3_sign_verify() -> Result<()> {
         let blake3 = Blake3::load("fixtures/blake3.txt")?;
-        
+
         let data = b"hello world";
         let sig = blake3.sign(&mut &data[..]).unwrap();
-        
+
         assert!(blake3.verity(&data[..], &sig).unwrap());
         Ok(())
     }
 
     #[test]
-    fn test_ed25519_sign_verify() -> Result<()>{
-        let sk = Ed25519Signer::load("fixtures/ed25519.sk")?;    
+    fn test_ed25519_sign_verify() -> Result<()> {
+        let sk = Ed25519Signer::load("fixtures/ed25519.sk")?;
         let pk = Ed25519Verifier::load("fixtures/ed25519.pk")?;
 
         let data = b"hello world";

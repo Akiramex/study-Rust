@@ -1,11 +1,11 @@
-use std::path::PathBuf;
 use clap::Parser;
+use std::path::PathBuf;
 
 use super::verity_path;
 
 #[derive(Debug, Parser)]
 pub enum HttpSubCommand {
-    #[command(about="Serve a directory over HTTP")]
+    #[command(about = "Serve a directory over HTTP")]
     Serve(httpServeOpts),
 }
 

@@ -22,7 +22,7 @@ pub fn process_decode(input: &str, format: Base64Format) -> Result<Vec<u8>> {
     let mut reader = get_reader(input)?;
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
-    // avoid accidental newlines 
+    // avoid accidental newlines
     let buf = buf.trim();
 
     let decoded = match format {

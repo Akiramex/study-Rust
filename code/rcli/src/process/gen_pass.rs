@@ -1,7 +1,6 @@
 use anyhow::Ok;
 use rand::{seq::SliceRandom, Rng};
 
-
 const UPPER: &[u8] = b"ABCDEFGHJKMNPQRSTUVWSYZ";
 const LOWER: &[u8] = b"abcdefghjkmnpqrstuvwsyz";
 const NUMBER: &[u8] = b"123456789";
