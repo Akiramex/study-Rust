@@ -80,6 +80,15 @@ base64和哈希（如MD5、SHA-1、SHA-256、blake3等）是两种完全不同�
 
 `唯一性`：哈希值需要具有唯一性，以避免碰撞，而Base64编码则不关心这一点
 
+## 对称加密库 chacha20poly1305
+
+对称加密，加密解密用同一套公钥
+
 ## 非对称加密库 ed25519_dalek 
 
-加密算法
+非对称加密算法，公钥用来加密，私钥用来解密
+
+## awesome_cryptography-rust
+
+[awesome_cryptography-rust](https://github.com/rust-cc/awesome-cryptography-rust)
+

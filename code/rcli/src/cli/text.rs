@@ -1,8 +1,8 @@
-use std::{fmt, str::FromStr};
+use std::{fmt, path::PathBuf, str::FromStr};
 
 use clap::Parser;
 
-use super::verity_file;
+use super::{verity_file, verity_path};
 
 #[derive(Debug, Parser)]
 pub enum TextSubCommand {
@@ -10,6 +10,12 @@ pub enum TextSubCommand {
     Sign(TextSignOpts),
     #[command(about = "Verity a signed message")]
     Verity(TextVerityOpts),
+    #[command(about = "Generate a new key")]
+    Generate(TextKeyGenerateOpts),
+    #[command(about = "Encrypt a message")]
+    Encrypt(TextEncrypt),
+    #[command(about = "Decrypt a encrypt message")]
+    Decrypt(TextDecrypt),
 }
 
 #[derive(Debug, Parser)]
@@ -37,6 +43,26 @@ pub struct TextVerityOpts {
 
     #[arg(short, long)]
     pub sig: String,
+}
+#[derive(Debug, Parser)]
+pub struct TextKeyGenerateOpts {
+    #[arg(short, long, value_parser = parse_format, default_value = "blake3")]
+    pub format: TextSignFormat,
+
+    #[arg(short, long, value_parser = verity_path)]
+    pub output: PathBuf,
+}
+
+#[derive(Debug, Parser)]
+pub struct TextEncrypt {
+    #[arg(short, long)]
+    pub key: String,
+}
+
+#[derive(Debug, Parser)]
+pub struct TextDecrypt {
+    #[arg(short, long)]
+    pub key: String,
 }
 
 fn parse_format(input: &str) -> Result<TextSignFormat, anyhow::Error> {

@@ -3,6 +3,10 @@ use anyhow::Result;
 use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine as _};
 use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
 use std::{fs, io::Read, path::Path};
+use rand::rngs::OsRng;
+use super::process_genpass;
+
+type GenerateKey = Vec<Vec<u8>>;
 
 pub trait TextSign {
     /// Sign the data from the reader and return the signature
@@ -31,7 +35,7 @@ pub struct Ed25519Verifier {
     key: VerifyingKey,
 }
 
-pub fn process_text_sign(input: &str, key: &str, format: TextSignFormat) -> Result<()> {
+pub fn process_text_sign(input: &str, key: &str, format: TextSignFormat) -> Result<String> {
     let mut reader = get_reader(input)?;
 
     let signed = match format {
@@ -45,8 +49,7 @@ pub fn process_text_sign(input: &str, key: &str, format: TextSignFormat) -> Resu
         }
     };
     let signed = URL_SAFE_NO_PAD.encode(&signed);
-    println!("{}", signed);
-    Ok(())
+    Ok(signed)
 }
 
 pub fn process_text_verity(
@@ -54,7 +57,7 @@ pub fn process_text_verity(
     key: &str,
     format: TextSignFormat,
     sig: &str,
-) -> Result<()> {
+) -> Result<bool> {
     let reader = get_reader(input)?;
 
     let sig = URL_SAFE_NO_PAD.decode(sig)?;
@@ -69,8 +72,15 @@ pub fn process_text_verity(
         }
     };
 
-    println!("{}", verified);
-    Ok(())
+    Ok(verified)
+}
+pub fn process_text_generate(format: TextSignFormat) -> Result<GenerateKey> {
+    let keys = match format {
+        TextSignFormat::Blake3 => Blake3::generate()?,
+        TextSignFormat::Ed25519 => Ed25519Signer::generate()?,
+    };
+
+    Ok(keys)
 }
 
 impl TextSign for Blake3 {
@@ -178,8 +188,28 @@ impl KeyLoader for Ed25519Verifier {
     }
 }
 
+pub trait KeyGenerator {
+    fn generate() -> Result<GenerateKey>;
+} 
 
+impl KeyGenerator for Blake3 {
+    fn generate() -> Result<GenerateKey> {
+        let key = process_genpass(32, true, true, true, true)?;
+        let key = key.as_bytes().to_vec();
+        Ok(vec![key])
+    }
+}
 
+impl KeyGenerator for Ed25519Signer {
+    fn generate() -> Result<GenerateKey> {
+        let mut csprng = OsRng;
+        let sk: SigningKey = SigningKey::generate(&mut csprng);
+        let pk: Vec<u8> = sk.verifying_key().as_bytes().to_vec();
+        let sk: Vec<u8> = sk.as_bytes().to_vec();
+
+        Ok(vec![sk, pk]) 
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -192,6 +222,17 @@ mod tests {
         let sig = blake3.sign(&mut &data[..]).unwrap();
         
         assert!(blake3.verity(&data[..], &sig).unwrap());
+        Ok(())
+    }
+
+    #[test]
+    fn test_ed25519_sign_verify() -> Result<()>{
+        let sk = Ed25519Signer::load("fixtures/ed25519.sk")?;    
+        let pk = Ed25519Verifier::load("fixtures/ed25519.pk")?;
+
+        let data = b"hello world";
+        let sig = sk.sign(&mut &data[..]).unwrap();
+        assert!(pk.verity(&data[..], &sig).unwrap());
         Ok(())
     }
 }

@@ -1,7 +1,5 @@
 use std::{fmt, str::FromStr};
-
 use clap::Parser;
-
 use super::verity_file;
 
 #[derive(Debug, Clone, Copy)]
