@@ -13,7 +13,7 @@ pub use self::{
     base64::{Base64Format, Base64SubCommand},
     csv::OutputFormat,
     http::HttpSubCommand,
-    text::{TextSignFormat, TextSubCommand},
+    text::{TextEncryptFormat, TextGenerateFormat, TextSignFormat, TextSubCommand},
 };
 
 #[derive(Debug, Parser)]

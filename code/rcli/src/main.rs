@@ -3,9 +3,9 @@ use std::fs;
 use clap::Parser;
 use rcli::{
     process_csv, process_decode, process_encode, process_genpass, process_text_generate,
-    process_text_sign, process_text_verity, TextSubCommand,
+    process_text_sign, process_text_verity, process_text_encrypt, process_text_decrypt,
 };
-use rcli::{Base64SubCommand, HttpSubCommand, Opts, SubCommand};
+use rcli::{Base64SubCommand, HttpSubCommand, Opts, SubCommand, TextSubCommand};
 use zxcvbn::zxcvbn;
 
 // rcli csv -i input.csv -o output.json --header -d ','
@@ -60,22 +60,32 @@ fn main() -> anyhow::Result<()> {
             TextSubCommand::Generate(opts) => {
                 let key = process_text_generate(opts.format)?;
                 match opts.format {
-                    rcli::TextSignFormat::Blake3 => {
+                    rcli::TextGenerateFormat::Blake3 => {
                         let name = opts.output.join("blake3.txt");
                         fs::write(name, &key[0])?;
                     }
-                    rcli::TextSignFormat::Ed25519 => {
+                    rcli::TextGenerateFormat::Ed25519 => {
                         let name = &opts.output;
                         fs::write(name.join("ed25519.sk"), &key[0])?;
                         fs::write(name.join("ed25519.pk"), &key[1])?;
                     }
+                    rcli::TextGenerateFormat::ChaCha20 => {
+                        let name = &opts.output.join("chacha20.key");
+                        fs::write(name, &key[0])?;
+                    }
+                    rcli::TextGenerateFormat::Aes => {
+                        let name = &opts.output.join("aes_gcm.key");
+                        fs::write(name, &key[0])?;
+                    }
                 }
             }
             TextSubCommand::Encrypt(opts) => {
-                println!("{:?}", opts)
+                let data = process_text_encrypt(&opts.input, &opts.key, opts.format)?;
+                println!("Encrypt data:{}", data)
             }
             TextSubCommand::Decrypt(opts) => {
-                println!("{:?}", opts)
+                let data = process_text_decrypt(&opts.input, &opts.key, opts.format)?;
+                println!("Decrypt data:{}", data)
             }
         },
         SubCommand::Http(subcmd) => match subcmd {
