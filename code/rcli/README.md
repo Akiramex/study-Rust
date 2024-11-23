@@ -92,3 +92,19 @@ base64和哈希（如MD5、SHA-1、SHA-256、blake3等）是两种完全不同�
 
 [awesome_cryptography-rust](https://github.com/rust-cc/awesome-cryptography-rust)
 
+## tokio
+
+## axum
+
+## tracing
+
+开启日志
+
+~~~shell
+Linux: RUST_LOG=info cargo run 
+
+Windows: $env:RUST_LOG="info"
+         cargo run
+~~~
+
+## vscode 插件 rest htto

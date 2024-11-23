@@ -128,7 +128,7 @@ pub enum TextGenerateFormat {
     Blake3,
     Ed25519,
     ChaCha20,
-    Aes
+    Aes,
 }
 
 impl From<TextGenerateFormat> for &'static str {

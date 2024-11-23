@@ -12,7 +12,7 @@ use chacha20poly1305::{
 };
 
 use aes_gcm::{
-    Aes256Gcm// Or `Aes128Gcm`
+    Aes256Gcm, // Or `Aes128Gcm`
 };
 
 type GenerateKey = Vec<Vec<u8>>;
@@ -58,7 +58,7 @@ pub struct ChaCha20 {
 }
 
 pub struct Aes {
-    key: aes_gcm::Key<Aes256Gcm>
+    key: aes_gcm::Key<Aes256Gcm>,
 }
 pub fn process_text_encrypt(input: &str, key: &str, format: TextEncryptFormat) -> Result<String> {
     let mut reader = get_reader(input)?;
@@ -67,7 +67,7 @@ pub fn process_text_encrypt(input: &str, key: &str, format: TextEncryptFormat) -
         TextEncryptFormat::ChaCha20 => {
             let cipher = ChaCha20::load(key)?;
             cipher.encrypt(&mut reader)?
-        },
+        }
         TextEncryptFormat::Aes => {
             let cipher = Aes::load(key)?;
             cipher.encrypt(&mut reader)?
@@ -87,7 +87,7 @@ pub fn process_text_decrypt(input: &str, key: &str, format: TextEncryptFormat) -
         TextEncryptFormat::ChaCha20 => {
             let cipher = ChaCha20::load(key)?;
             cipher.decrypt(&mut encrypted.as_slice())?
-        },
+        }
         TextEncryptFormat::Aes => {
             let cipher = Aes::load(key)?;
             cipher.decrypt(&mut encrypted.as_slice())?
@@ -227,9 +227,9 @@ impl TextEncrypt for Aes {
         let mut buf = Vec::new();
         reader.read_to_end(&mut buf)?;
 
-        let cipher: Aes256Gcm  = Aes256Gcm::new(&self.key);
+        let cipher: Aes256Gcm = Aes256Gcm::new(&self.key);
 
-        let nonce  = Aes256Gcm::generate_nonce(&mut OsRng);
+        let nonce = Aes256Gcm::generate_nonce(&mut OsRng);
         let encrypted_data: Vec<u8> = cipher
             .encrypt(&nonce, buf.as_ref())
             .expect("Encryption failure");
@@ -247,7 +247,7 @@ impl TextDecrypt for Aes {
 
         let cipher: Aes256Gcm = Aes256Gcm::new(&self.key);
 
-        let nonce  = aes_gcm::Nonce::from_slice(&buf[..12]);
+        let nonce = aes_gcm::Nonce::from_slice(&buf[..12]);
         let encrypted_data = &buf[12..];
 
         let decrypted_data: Vec<u8> = cipher
@@ -320,8 +320,9 @@ impl Aes {
 
 impl KeyLoader for Aes {
     fn load(path: impl AsRef<Path>) -> Result<Self>
-        where
-            Self: Sized {
+    where
+        Self: Sized,
+    {
         let key = fs::read(path)?;
         Self::try_new(&key)
     }

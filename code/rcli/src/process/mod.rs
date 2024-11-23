@@ -10,3 +10,5 @@ pub use text::{
     process_text_decrypt, process_text_encrypt, process_text_generate, process_text_sign,
     process_text_verity,
 };
+
+pub use http_serve::process_http_serve;
