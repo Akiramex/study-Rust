@@ -107,4 +107,8 @@ Windows: $env:RUST_LOG="info"
          cargo run
 ~~~
 
-## vscode 插件 rest htto
+## vscode 插件 rest http
+
+## Rust 小知识
+
+![alt text](./assets/1732459607333.png)
