@@ -1,5 +1,9 @@
 use anyhow::{anyhow, Result};
-use std::{sync::mpsc, thread::{self, sleep}, time::Duration};
+use std::{
+    sync::mpsc,
+    thread::{self, sleep},
+    time::Duration,
+};
 
 const NUM_PRODUCES: usize = 4;
 
@@ -28,7 +32,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn producer(idx: usize, tx: mpsc::Sender<Msg>) -> Result<()>{
+fn producer(idx: usize, tx: mpsc::Sender<Msg>) -> Result<()> {
     loop {
         let value = rand::random::<usize>();
         tx.send(Msg::new(idx, value))?;
@@ -51,6 +55,6 @@ struct Msg {
 
 impl Msg {
     fn new(idx: usize, value: usize) -> Self {
-        Self{idx, value}
+        Self { idx, value }
     }
 }
