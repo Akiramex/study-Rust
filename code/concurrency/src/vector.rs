@@ -1,4 +1,3 @@
-use anyhow::Result;
 use std::ops::Deref;
 
 pub struct Vector<T> {
