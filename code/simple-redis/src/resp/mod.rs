@@ -15,6 +15,7 @@ pub trait RespEncode {
 pub trait RespDecode: Sized {
     const PREFIX: &'static str;
     fn decode(buf: &mut BytesMut) -> Result<Self, RespError>;
+    fn expect_length(buf: &[u8]) -> Result<usize, RespError>;
 }
 
 #[derive(Error, Debug, PartialEq, Eq)]
