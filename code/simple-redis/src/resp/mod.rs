@@ -31,7 +31,7 @@ pub enum RespError {
     #[error("Parse error: {0}")]
     ParseIntError(#[from] std::num::ParseIntError),
     #[error("Utf8 error: {0}")]
-    Utf8Error(#[from] std::str::Utf8Error),
+    Utf8Error(#[from] std::string::FromUtf8Error),
     #[error("Parse float error: {0}")]
     ParseFloatError(#[from] std::num::ParseFloatError),
 }
@@ -53,7 +53,7 @@ pub enum RespError {
     - set: "~"<number-of-elements>\r\n<element-1>...<element-n>
 */
 #[enum_dispatch(RespEncode)]
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub enum RespFrame {
     SimpleString(SimpleString),
     Error(SimpleError),
@@ -69,8 +69,8 @@ pub enum RespFrame {
     Set(RespSet),
 }
 
-#[derive(Debug, PartialEq, Eq, PartialOrd)]
-struct SimpleString(String);
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
+pub struct SimpleString(pub(crate) String);
 
 impl Deref for SimpleString {
     type Target = String;
@@ -89,8 +89,8 @@ impl From<&str> for SimpleString {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, PartialOrd)]
-struct SimpleError(String);
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
+pub  struct SimpleError(pub(crate) String);
 impl Deref for SimpleError {
     type Target = String;
     fn deref(&self) -> &Self::Target {
@@ -108,8 +108,8 @@ impl From<&str> for RespFrame {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, PartialOrd)]
-struct BulkString(Vec<u8>);
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
+pub  struct BulkString(pub(crate) Vec<u8>);
 impl Deref for BulkString {
     type Target = Vec<u8>;
     fn deref(&self) -> &Self::Target {
@@ -147,17 +147,17 @@ impl<const N: usize> From<&[u8; N]> for RespFrame {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, PartialOrd)]
-struct RespNull;
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
+pub struct RespNull;
 
-#[derive(Debug, PartialEq, Eq, PartialOrd)]
-struct RespNullArray;
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
+pub struct RespNullArray;
 
-#[derive(Debug, PartialEq, Eq, PartialOrd)]
-struct RespNullBulkString;
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd)]
+pub struct RespNullBulkString;
 
-#[derive(Debug, PartialEq, PartialOrd)]
-struct RespArray(Vec<RespFrame>);
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct RespArray(pub(crate) Vec<RespFrame>);
 impl Deref for RespArray {
     type Target = Vec<RespFrame>;
     fn deref(&self) -> &Self::Target {
@@ -170,8 +170,8 @@ impl RespArray {
     }
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
-struct RespMap(BTreeMap<String, RespFrame>);
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct RespMap(pub(crate) BTreeMap<String, RespFrame>);
 impl Deref for RespMap {
     type Target = BTreeMap<String, RespFrame>;
 
@@ -190,8 +190,8 @@ impl RespMap {
     }
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
-struct RespSet(Vec<RespFrame>);
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct RespSet(pub(crate) Vec<RespFrame>);
 impl Deref for RespSet {
     type Target = Vec<RespFrame>;
     fn deref(&self) -> &Self::Target {
@@ -201,5 +201,16 @@ impl Deref for RespSet {
 impl RespSet {
     pub fn new(s: impl Into<Vec<RespFrame>>) -> Self {
         RespSet(s.into())
+    }
+}
+
+impl AsRef<str> for SimpleString {
+    fn as_ref(&self) -> &str {
+        &self.0
+    }
+}
+impl AsRef<[u8]> for BulkString {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
     }
 }
