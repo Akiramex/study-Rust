@@ -3,6 +3,7 @@ use crate::{
     cmd::{CommandError, Get},
     RespArray, RespFrame, RespNull,
 };
+
 impl CommandExecutor for Get {
     fn execute(self, backend: &crate::Backend) -> RespFrame {
         match backend.get(&self.key) {
