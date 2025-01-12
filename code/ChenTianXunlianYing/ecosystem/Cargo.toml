@@ -5,7 +5,11 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.95"
+derive_builder = "0.20.2"
+derive_more = { version = "1.0.0", features = ["full"] }
 salvo = "0.75.0"
-tokio = { version = "1.43.0", features = ["rt-multi-thread", "rt", "macros"] }
+strum = { version = "0.26.3", features = ["derive"] }
+tokio = { version = "1.43.0", features = ["rt-multi-thread", "rt", "macros", "fs"] }
 tracing = "0.1.41"
+tracing-appender = "0.2.3"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }

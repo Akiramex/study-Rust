@@ -1,0 +1,30 @@
+  2025-01-12T05:49:51.727729Z  INFO salvo_tracing: Starting server on 0.0.0.0:5800
+    at examples\salvo_tracing.rs:33
+
+  2025-01-12T05:49:51.728983Z  INFO salvo_core::server: listening [HTTP/1.1] on http://0.0.0.0:5800
+    at C:\Users\akira\.cargo\registry\src\rsproxy.cn-0dccff568467c15b\salvo_core-0.75.0\src\server.rs:253
+
+  2025-01-12T05:51:55.753288Z  WARN input_events: Hello, abc: 100
+    at examples\salvo_tracing.rs:41
+    in salvo_tracing::hello
+
+  2025-01-12T05:52:37.661375Z  INFO salvo_tracing: Starting server on 0.0.0.0:5800
+    at examples\salvo_tracing.rs:33
+
+  2025-01-12T05:52:37.662101Z  INFO salvo_core::server: listening [HTTP/1.1] on http://0.0.0.0:5800
+    at C:\Users\akira\.cargo\registry\src\rsproxy.cn-0dccff568467c15b\salvo_core-0.75.0\src\server.rs:253
+
+  2025-01-12T05:52:41.885739Z  WARN input_events: Hello, abc: 100
+    at examples\salvo_tracing.rs:41
+    in salvo_tracing::hello
+
+  2025-01-12T05:53:06.860371Z  INFO salvo_tracing: Starting server on 0.0.0.0:5800
+    at examples\salvo_tracing.rs:33
+
+  2025-01-12T05:53:06.861406Z  INFO salvo_core::server: listening [HTTP/1.1] on http://0.0.0.0:5800
+    at C:\Users\akira\.cargo\registry\src\rsproxy.cn-0dccff568467c15b\salvo_core-0.75.0\src\server.rs:253
+
+  2025-01-12T05:53:08.688672Z  WARN input_events: Hello, abc: 100
+    at examples\salvo_tracing.rs:41
+    in salvo_tracing::hello
+

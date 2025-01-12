@@ -1,0 +1,12 @@
+  2025-01-11T14:35:02.676103Z  INFO salvo_tracing: Starting server on 0.0.0.0:5800
+    at examples\salvo_tracing.rs:31
+
+  2025-01-11T14:35:02.676608Z  INFO salvo_core::server: listening [HTTP/1.1] on http://0.0.0.0:5800
+    at C:\Users\akira\.cargo\registry\src\rsproxy.cn-0dccff568467c15b\salvo_core-0.75.0\src\server.rs:253
+
+  [2m2025-01-11T14:35:21.800940Z[0m [32m INFO[0m [1;32msalvo_tracing[0m[32m: [32mStarting server on 0.0.0.0:5800[0m
+    [2;3mat[0m examples\salvo_tracing.rs:30
+
+  [2m2025-01-11T14:35:21.801668Z[0m [32m INFO[0m [1;32msalvo_core::server[0m[32m: [32mlistening [HTTP/1.1] on http://0.0.0.0:5800[0m
+    [2;3mat[0m C:\Users\akira\.cargo\registry\src\rsproxy.cn-0dccff568467c15b\salvo_core-0.75.0\src\server.rs:253
+
