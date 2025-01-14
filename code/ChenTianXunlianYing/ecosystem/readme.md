@@ -19,3 +19,34 @@ derive_builder: 构建数据结构的 builder
 derive_more: 标准库trait的自动实现
 
 strum: enum相关的trait的自动实现
+
+## 序列化/反序列化
+
+serde
+
+
+
+~~~ Rust
+// 重命名序列化后的名字形式
+#[serde(rename_all = "camelCase")]
+
+// 重命名单个字段
+#[serde(rename = "rename")]
+
+// 自定义序列化/反序列化函数
+#[serde(serialize_with = "fn_serialize", deserialize_with = "fn_deserialize")]
+
+// 跳过某个字段
+#[serde(skip)]
+
+// 如果fn为ture，跳过某个字段
+#[serde(skip_serializing_if = "fn")]
+
+// 如果反序列化没有值，就调用defalut
+#[serde(default)]
+#[serde(default = "fn")]
+~~~
+
+serde_with
+
+看doc，DisplayFromStr， FromStr序列化，Display展示反序列化
