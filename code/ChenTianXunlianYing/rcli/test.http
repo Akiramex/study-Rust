@@ -1,3 +1,16 @@
 ### Test index page
 
 GET http://localhost:8080/avbasd.txt
+
+### Test index page
+GET http://localhost:15000/api/auth/users
+
+### Test index page
+
+POST http://localhost:15000/api/auth/users
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}

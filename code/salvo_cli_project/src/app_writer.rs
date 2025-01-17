@@ -76,15 +76,15 @@ impl<T: Serialize + Send + Default> ResponseBuilder<T> {
 
 impl ErrorResponseBuilder {
     pub fn with_err(err: AppError) -> Self {
-    let (code, msg) = match &err {
-    AppError::AnyHow(e) => (500, e.to_string()),
-    AppError::ParseError(e) => (400, e.to_string()),
-    };
-        Self {
-            code,
-            msg,
-            source_error: err,
-        }
+        let (code, msg) = match &err {
+            AppError::AnyHow(e) => (500, e.to_string()),
+            AppError::ParseError(e) => (400, e.to_string()),
+        };
+            Self {
+                code,
+                msg,
+                source_error: err,
+            }
     }
 }
 impl<T: Serialize + Send + Default> ResponseBuilder<T> {
