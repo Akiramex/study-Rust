@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.95"
+bytes = "1.9.0"
 derive_builder = "0.20.2"
 derive_more = { version = "1.0.0", features = ["full"] }
 salvo = "0.75.0"
