@@ -1,8 +1,27 @@
+use std::fs::File;
+
 use salvo::oapi::endpoint;
-use crate::app_writer::AppResult;
+use crate::{app_error::AppError, app_writer::{AppResult, AppWriter}};
 #[endpoint]
 pub async fn hello() -> AppResult<&'static str> {
     Ok("Hello World from salvo")
+}
+
+
+#[endpoint]
+pub async fn hello1() -> AppWriter<&'static str> {
+    Ok("()").into()
+}
+
+#[endpoint]
+pub async fn hello2() -> AppResult<AppWriter<String>> {
+    let a = test();
+    Ok(AppWriter(a))
+}
+
+use anyhow::anyhow;
+fn test() -> AppResult<String> {
+    Err(AppError::AnyHow(anyhow!("test")))
 }
 
 #[allow(unused_imports)]

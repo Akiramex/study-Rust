@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use salvo::prelude::*;
 use tokio::fs::{self, File};
 use tokio::io::AsyncWriteExt;
@@ -9,12 +11,13 @@ use tracing_subscriber::{
 async fn main() {
     let file_appender = tracing_appender::rolling::daily("log", "ecosystem.log");
     let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);    
-
+    
     let console = fmt::Layer::new()
         .with_span_events(FmtSpan::CLOSE)
         .pretty()
         .with_filter(LevelFilter::DEBUG);
 
+    let a = FmtSpan::from_str("CLOSE").unwrap();
 
     let file = fmt::Layer::new()
         .with_ansi(false)
@@ -47,4 +50,48 @@ async fn hello2() -> anyhow::Result<()>{
     let mut file = File::create("foo.txt").await?;
     file.write_all(b"hello, worldasd!").await?;
     Ok(())
+}
+
+struct MyStruct(FmtSpan);
+
+impl FromStr for MyStruct {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "CLOSE" => Ok(MyStruct(FmtSpan::CLOSE)),
+            _ => Err(anyhow::anyhow!("Invalid value")),
+        }
+    }
+}
+
+
+
+// 定义一个本地的 trait
+trait MyFromStr {
+    fn from_str(s: &str) -> Result<Self, anyhow::Error>
+    where
+        Self: Sized;
+}
+
+impl MyFromStr for FmtSpan {
+    fn from_str(s: &str) -> Result<Self, anyhow::Error>
+        where
+            Self: Sized {
+                match s {
+                    "CLOSE" => Ok(FmtSpan::CLOSE),
+                    _ => Err(anyhow::anyhow!("Invalid value")),
+                }
+    }
+}
+
+// test TryFrom
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_try_from() {
+        let my_struct = MyStruct::try_from("CLOSE").unwrap();
+        assert_eq!(my_struct.0, FmtSpan::CLOSE);
+    }
 }
