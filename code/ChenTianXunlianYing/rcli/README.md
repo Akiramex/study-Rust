@@ -26,7 +26,7 @@ select * from read_csv('path/to/file.csv', auto_detect=true)
 
 ## tokie
 
-使用tokie查看项目的代码数`
+使用tokie查看项目的代码数
 
 ## git
 
