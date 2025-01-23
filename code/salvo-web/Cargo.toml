@@ -1,2 +1,0 @@
-[workspace]
-members = [ "custom_request","hello-world", "jwt-exp", "simple-api-web", "simple-api-web-db"]
