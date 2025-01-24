@@ -30,7 +30,7 @@ async fn main() {
         .with(file)
         .init();
 
-    let addr = "0.0.0.0:5800";
+    let addr = "0.0.0.0:8080";
     let acceptor = TcpListener::new(addr).bind().await;
     let router = Router::new().get(hello);
     info!("Starting server on {}", addr);
@@ -42,7 +42,7 @@ async fn main() {
 async fn hello() -> &'static str {
     let a = 100;
     warn!(target: "input_events", abc = a, "Hello");
-    hello2().await;
+    //hello2().await;
     "Hello world"
 }
 

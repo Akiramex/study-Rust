@@ -1,2 +1,12 @@
 
-GET http://localhost:5800
+GET http://localhost:8081
+
+
+###
+
+PATCH  http://localhost:8081/
+Content-Type: application/json
+
+{
+    "skills":"Rust"
+}
