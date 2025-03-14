@@ -1,0 +1,45 @@
+[package]
+edition = "2021"
+name    = "espwifi"
+version = "0.1.0"
+
+[[bin]]
+name = "espwifi"
+path = "./src/bin/main.rs"
+
+[dependencies]
+blocking-network-stack = { git = "https://github.com/bjoernQ/blocking-network-stack.git", rev = "b3ecefc222d8806edd221f266999ca339c52d34e" }
+esp-alloc = "0.7.0"
+esp-backtrace = { version = "0.15.1", features = [
+    "esp32c3",
+    "panic-handler",
+    "exception-handler",
+    "println",
+] }
+esp-hal          = { version = "1.0.0-beta.0", features = ["esp32c3", "unstable"] }
+esp-println = { version = "0.13.1", features = ["esp32c3"] }
+esp-wifi         = { version = "0.13.0", features = ["esp32c3", "wifi", "smoltcp"] }
+smoltcp = { version = "0.12.0", default-features = false, features = [
+    "medium-ethernet",
+    "socket-raw",
+] }
+edge-dhcp = { version = "0.5.0" }
+edge-raw = { version = "0.5.0" }
+edge-nal = { version = "0.5.0" }
+edge-nal-embassy = { version = "0.5.0" }
+embedded-io         = { version = "0.6.1", default-features = false }
+heapless = { version = "0.8.0", default-features = false }
+
+[profile.dev]
+# Rust debug is too slow.
+# For debug builds always builds with some optimization
+opt-level = "s"
+
+[profile.release]
+codegen-units    = 1     # LLVM can perform better optimizations using a single thread
+debug            = 2
+debug-assertions = false
+incremental      = false
+lto              = 'fat'
+#opt-level        = 's'
+overflow-checks  = false
