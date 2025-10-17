@@ -139,10 +139,11 @@ export class World {
     }
     /**
      * @param {number} width
+     * @param {number} snake_head_index
      * @returns {World}
      */
-    static new(width) {
-        const ret = wasm.world_new(width);
+    static new(width, snake_head_index) {
+        const ret = wasm.world_new(width, snake_head_index);
         return World.__wrap(ret);
     }
     /**
@@ -151,6 +152,16 @@ export class World {
     width() {
         const ret = wasm.world_width(this.__wbg_ptr);
         return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
+    snake_head_index() {
+        const ret = wasm.world_snake_head_index(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    update() {
+        wasm.world_update(this.__wbg_ptr);
     }
 }
 if (Symbol.dispose) World.prototype[Symbol.dispose] = World.prototype.free;

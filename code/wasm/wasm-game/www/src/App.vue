@@ -12,8 +12,9 @@ const createWorld = async () => {
   const wasm = await loadWasm()
 
   const CELL_SIZE = 20;
+  const fps = 5;
 
-  const world = wasm.World.new(20);
+  const world = wasm.World.new(20, 30);
   const worldWidth = world.width();
 
   //const canvas = document.getElementById("snake-world") as HTMLCanvasElement;
@@ -37,7 +38,28 @@ const createWorld = async () => {
     ctx.stroke();
   }
 
-  drawWorld();
+  function drawSnake() {
+    const snake_index = world.snake_head_index();
+    const row = Math.floor(snake_index / worldWidth);
+    const col = snake_index % worldWidth;
+
+    ctx.beginPath();
+    ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    ctx.stroke();
+  }
+
+  function run () {
+    setTimeout(() => {
+      world.update();
+      ctx.clearRect(0, 0, snake_world.value!.width, snake_world.value!.height);
+      drawWorld();
+      drawSnake();
+      requestAnimationFrame(run);
+    }, 1000 / fps);
+
+  }
+
+  run();
 }
 </script>
 
