@@ -4,19 +4,25 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 
-
-#[wasm_bindgen]
-pub fn add(left: i32, right: i32) -> i32 {
-    left + right
-}
-
-#[wasm_bindgen]
-pub fn sub(left: i32, right: i32) -> i32 {
-    left - right
-}
-
-#[wasm_bindgen(start)]          // 包加载时自动执行
+#[wasm_bindgen(start)]
 pub fn start() {
     console_error_panic_hook::set_once();
     tracing_wasm::set_as_global_default();
+}
+
+#[wasm_bindgen]
+struct World {
+    width: u32,
+    size: u32,
+}
+
+#[wasm_bindgen]
+impl World {
+    pub fn new(width: u32) -> Self {
+        World { width, size: width * width}
+    }
+
+    pub fn width(&self) -> u32 {
+        self.width
+    }
 }

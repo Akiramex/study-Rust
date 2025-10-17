@@ -1,33 +1,65 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import init, {add, sub} from 'wasm_game'
+import { loadWasm } from "./wasm/wasmLoader";
+import { onMounted, ref } from "vue";
 
+const snake_world = ref<HTMLCanvasElement | null>(null);
 
+onMounted(async () => {
+  await createWorld();
+});
+
+const createWorld = async () => {
+  const wasm = await loadWasm()
+
+  const CELL_SIZE = 20;
+
+  const world = wasm.World.new(20);
+  const worldWidth = world.width();
+
+  //const canvas = document.getElementById("snake-world") as HTMLCanvasElement;
+  if (!snake_world.value) return;
+  const ctx = snake_world.value.getContext("2d") as CanvasRenderingContext2D;
+
+  snake_world.value.width = worldWidth * CELL_SIZE;
+  snake_world.value.height = worldWidth * CELL_SIZE;
+
+  function drawWorld() {
+    ctx.beginPath();
+    for (let x = 0; x < worldWidth + 1; x++) {
+      ctx.moveTo(x * CELL_SIZE, 0);
+      ctx.lineTo(x * CELL_SIZE, worldWidth * CELL_SIZE);
+    }
+
+    for (let y = 0; y < worldWidth + 1; y++) {
+      ctx.moveTo(0, y * CELL_SIZE);
+      ctx.lineTo(worldWidth * CELL_SIZE, y * CELL_SIZE);
+    }
+    ctx.stroke();
+  }
+
+  drawWorld();
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="content-warpper">
+    hello world
+    <canvas id="snake-world" ref ="snake_world">
+
+    </canvas>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.content-warpper {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 </style>
