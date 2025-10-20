@@ -46,6 +46,7 @@ const createWorld = async () => {
     ctx.beginPath();
     ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
     ctx.stroke();
+    
   }
 
   function run () {
