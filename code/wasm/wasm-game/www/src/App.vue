@@ -1,21 +1,48 @@
 <script setup lang="ts">
 import { loadWasm } from "./wasm/wasmLoader";
+import { random } from "./utils/random";
+import { World, Direction} from "./wasm/wasm_game";
 import { onMounted, ref } from "vue";
 
 const snake_world = ref<HTMLCanvasElement | null>(null);
 
+const whole_world = ref<World | null>(null);
+
 onMounted(async () => {
+  
+
   await createWorld();
 });
+
+const handleArrorKey = (event: KeyboardEvent) => {
+  if (!whole_world.value) return;
+  switch (event.key) {
+    case "ArrowUp":
+      whole_world.value.change_snake_direction(Direction.Up);
+      break;
+    case "ArrowDown":
+      whole_world.value.change_snake_direction(Direction.Down);
+      break;
+    case "ArrowLeft":
+      whole_world.value.change_snake_direction(Direction.Left);
+      break;
+    case "ArrowRight":
+      whole_world.value.change_snake_direction(Direction.Right);
+      break;
+  }
+  
+}
 
 const createWorld = async () => {
   const wasm = await loadWasm()
 
   const CELL_SIZE = 20;
+  const WORLD_WIDTH = 20;
   const fps = 5;
 
-  const world = wasm.World.new(20, 30);
-  const worldWidth = world.width();
+  const snakeIndex = random(WORLD_WIDTH * WORLD_WIDTH);
+  whole_world.value = wasm.World.new(WORLD_WIDTH, snakeIndex);
+  const worldWidth = whole_world.value.width();
 
   //const canvas = document.getElementById("snake-world") as HTMLCanvasElement;
   if (!snake_world.value) return;
@@ -39,19 +66,20 @@ const createWorld = async () => {
   }
 
   function drawSnake() {
-    const snake_index = world.snake_head_index();
+    if (!whole_world.value) return;
+    const snake_index = whole_world.value.snake_head_index();
     const row = Math.floor(snake_index / worldWidth);
     const col = snake_index % worldWidth;
 
     ctx.beginPath();
     ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
     ctx.stroke();
-    
   }
 
   function run () {
     setTimeout(() => {
-      world.update();
+      if (!whole_world.value) return;
+      whole_world.value.update();
       ctx.clearRect(0, 0, snake_world.value!.width, snake_world.value!.height);
       drawWorld();
       drawSnake();
@@ -65,7 +93,7 @@ const createWorld = async () => {
 </script>
 
 <template>
-  <div class="content-warpper">
+  <div @keydown="handleArrorKey" tabindex="0" class="content-warpper">
     hello world
     <canvas id="snake-world" ref ="snake_world">
 

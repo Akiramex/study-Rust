@@ -112,6 +112,16 @@ export function start() {
     wasm.start();
 }
 
+/**
+ * @enum {0 | 1 | 2 | 3}
+ */
+export const Direction = Object.freeze({
+    Up: 0, "0": "Up",
+    Down: 1, "1": "Down",
+    Left: 2, "2": "Left",
+    Right: 3, "3": "Right",
+});
+
 const WorldFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_world_free(ptr >>> 0, 1));
@@ -162,6 +172,12 @@ export class World {
     }
     update() {
         wasm.world_update(this.__wbg_ptr);
+    }
+    /**
+     * @param {Direction} direction
+     */
+    change_snake_direction(direction) {
+        wasm.world_change_snake_direction(this.__wbg_ptr, direction);
     }
 }
 if (Symbol.dispose) World.prototype[Symbol.dispose] = World.prototype.free;

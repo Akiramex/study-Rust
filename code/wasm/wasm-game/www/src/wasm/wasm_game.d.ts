@@ -1,6 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 export function start(): void;
+export enum Direction {
+  Up = 0,
+  Down = 1,
+  Left = 2,
+  Right = 3,
+}
 export class World {
   private constructor();
   free(): void;
@@ -9,6 +15,7 @@ export class World {
   width(): number;
   snake_head_index(): number;
   update(): void;
+  change_snake_direction(direction: Direction): void;
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
@@ -21,6 +28,7 @@ export interface InitOutput {
   readonly world_width: (a: number) => number;
   readonly world_snake_head_index: (a: number) => number;
   readonly world_update: (a: number) => void;
+  readonly world_change_snake_direction: (a: number, b: number) => void;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
