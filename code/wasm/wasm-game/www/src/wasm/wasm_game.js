@@ -1,3 +1,5 @@
+import { random } from './snippets/wasm_game-241beec059bdfc2f/www/src/utils/random.ts';
+
 let wasm;
 
 let cachedUint8ArrayMemory0 = null;
@@ -159,6 +161,13 @@ export class World {
     /**
      * @returns {number}
      */
+    reward_cell() {
+        const ret = wasm.world_reward_cell(this.__wbg_ptr);
+        return ret >>> 0;
+    }
+    /**
+     * @returns {number}
+     */
     width() {
         const ret = wasm.world_width(this.__wbg_ptr);
         return ret >>> 0;
@@ -274,6 +283,10 @@ function __wbg_get_imports() {
     }, arguments) };
     imports.wbg.__wbg_new_8a6f238a6ece86ea = function() {
         const ret = new Error();
+        return ret;
+    };
+    imports.wbg.__wbg_random_54646a0bf28b35d5 = function(arg0) {
+        const ret = random(arg0 >>> 0);
         return ret;
     };
     imports.wbg.__wbg_stack_0ed75d68575b0f3c = function(arg0, arg1) {

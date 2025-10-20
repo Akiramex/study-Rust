@@ -38,7 +38,7 @@ const createWorld = async () => {
 
   const CELL_SIZE = 20;
   const WORLD_WIDTH = 20;
-  const fps = 5;
+  const fps = 4;
 
   const snakeIndex = random(WORLD_WIDTH * WORLD_WIDTH);
   whole_world.value = wasm.World.new(WORLD_WIDTH, snakeIndex);
@@ -65,6 +65,18 @@ const createWorld = async () => {
     ctx.stroke();
   }
 
+  function drawReward() {
+    if (!whole_world.value) return;
+    const reward_index = whole_world.value.reward_cell();
+    const row = Math.floor(reward_index / worldWidth);
+    const col = reward_index % worldWidth;
+
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    ctx.stroke();
+  }
+
   function drawSnake() {
     if (!whole_world.value) return;
     const snake_index = whole_world.value.snake_head_index();
@@ -72,6 +84,7 @@ const createWorld = async () => {
     const col = snake_index % worldWidth;
 
     ctx.beginPath();
+    ctx.fillStyle = "green";
     ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
     ctx.stroke();
   }
@@ -83,6 +96,7 @@ const createWorld = async () => {
       ctx.clearRect(0, 0, snake_world.value!.width, snake_world.value!.height);
       drawWorld();
       drawSnake();
+      drawReward();
       requestAnimationFrame(run);
     }, 1000 / fps);
 

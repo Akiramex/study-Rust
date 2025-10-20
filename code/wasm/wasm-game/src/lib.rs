@@ -10,6 +10,11 @@ pub fn start() {
     tracing_wasm::set_as_global_default();
 }
 
+#[wasm_bindgen(module = "/www/src/utils/random.ts")]
+extern "C" {
+    fn random(max: u32) -> u32;
+}
+
 #[wasm_bindgen]
 pub enum Direction {
     Up,
@@ -38,6 +43,7 @@ impl Snake {
 pub struct World {
     width: u32,
     size: u32,
+    reward_cell: u32,
     snake: Snake,
 }
 
@@ -47,8 +53,17 @@ impl World {
         World { 
             width, 
             size: width * width,
+            reward_cell: Self::gen_random_cell(width * width),
             snake: Snake::new(snake_head_index),
         }
+    }
+
+    fn gen_random_cell(max : u32) -> u32 {
+        random(max)
+    }
+
+    pub fn reward_cell(&self) -> u32 {
+        self.reward_cell
     }
 
     pub fn width(&self) -> u32 {
